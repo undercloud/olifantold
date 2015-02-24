@@ -1,0 +1,11 @@
+<div><?= $_SERVER['DOCUMENT_ROOT']?></div>
+<div><?= $_SERVER['HTTP_HOST']?></div>
+<div><?= $_SERVER['SERVER_NAME']?></div>
+<div class="comments">
+	<ul>
+		<?php for($i=0;$i<10;$i++) {
+			echo "<li>" . $i . "</li>";	
+		}
+		?>
+	</ul>
+</div>

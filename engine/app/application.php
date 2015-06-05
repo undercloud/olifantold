@@ -8,8 +8,12 @@
 		{
 			/// @param $instance объект Application
 			protected static $instance = null;
+			private $uri = null;
 
-			private function __construct(){}
+			private function __construct()
+			{
+				$this->uri = $_SERVER['REQUEST_URI'];
+			}
 			
 			/** Экземпляр приложения
 				@return объект Application
@@ -21,28 +25,18 @@
 				return self::$instance;
 			}
 
-			/** Инициализация приложения
-				@return объект Application
-			*/
-			public function init($callback = null)
-			{
-				if(is_callable($callback))
-					call_user_func($callback);
-				return $this;
-			}
-
 			/** Запуск приложения
 				@return null
 			*/
 			public function run()
 			{
-				if(!isset($_SERVER) or !isset($_SERVER['REQUEST_URI']) or empty($_SERVER['REQUEST_URI']))
-					throw new \app\exceptions\AppException("Request URI is not defined");
-					
-				if($_SERVER['REQUEST_URI'] === "/")
-					$_SERVER['REQUEST_URI'] = "index";
+				if($this->uri === '/')
+					$this->uri = 'index';
 
-				$request = new Request($_SERVER['REQUEST_URI']);
+				if(0 === strpos($this->uri,'/?'))
+					$this->uri = 'index' . substr($this->uri,1);
+
+				$request = new Request($this->uri);
 				$request->prepareGlobalVars();
 				$request->reorderFiles();
 

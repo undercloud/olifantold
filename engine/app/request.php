@@ -15,7 +15,7 @@
 			public function __construct($ru)
 			{
 				if(null === $ru or empty($ru) or !is_string($ru))
-					throw new \app\exceptions\AppException('Invalid request uri');
+					throw new \app\exceptions\AppException('Invalid Request URI');
 
 				$this->request_uri = $ru;
 			}

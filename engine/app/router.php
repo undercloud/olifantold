@@ -12,7 +12,7 @@
 				@param $r запрос
 				@return объект Router
 			*/
-			public function __construct(Request $r)
+			public function __construct(\app\Request $r)
 			{
 				$this->request = $r;
 			}

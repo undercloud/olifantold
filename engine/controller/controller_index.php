@@ -1,5 +1,6 @@
 <?php
 	use core\sql\Model_ORM;
+	use \app\Request;
 	use domain\extproperty\Model_ExtpropertyObject;
 	use app\utils\EventDispatcher;
 	//use core\drive\Model_Image;
@@ -29,7 +30,9 @@
 
 		public function upload($r)
 		{
-			var_dump(\app\Request::isFileOverflow());
+			echo '<pre>';
+			var_dump($_FILES);
+			echo '</pre>';
 
 			/*
 			echo '<pre>';
@@ -302,7 +305,7 @@
 
 		public function json($r)
 		{
-			var_dump(json_decode(file_get_contents('php://input'),true));
+			var_dump($r,Request::fromJson());
 		}
 
 		public function tester($r)

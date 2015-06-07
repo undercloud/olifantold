@@ -47,8 +47,6 @@
 					$callable = new \stdClass;
 					$callable->controller = 'Controller_Error';
 					$callable->action     = 'notFound404';
-				}else{
-					$request->excludeMapKey($callable->mapkey);
 				}
 
 				if(isset($callable->options)){
@@ -59,7 +57,7 @@
 				->setController($callable->controller)
 				->setAction($callable->action)
 				->setParams($request->parse())
-				->run();
+				->exec();
 			}
 
 			/** Запрет клонирования

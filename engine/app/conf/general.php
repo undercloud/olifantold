@@ -1,7 +1,7 @@
 <?php
 	namespace app\conf;
 
-	const TIME_ZONE  = "Europe/Moscow";
+	const TIME_ZONE  = "UTC";
 	const TIME_LIMIT = 30;
 	const BACKTRACE_ERRORS = true;
 	const BACKTRACE_EXCEPTIONS = true;
@@ -22,8 +22,8 @@
 	ini_set("display_startup_errors",$err_mode);
 	ini_set('xdebug.default_enable', $err_mode);
 	ini_set("log_errors", 1);
-	ini_set('zlib.output_compression','On');
-	ini_set('zlib.output_compression_level', -1);
+	//ini_set('zlib.output_compression','On');
+	//ini_set('zlib.output_compression_level', -1);
 
 	//session
 	ini_set('session.gc_divisor',      100);

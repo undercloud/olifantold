@@ -2,7 +2,7 @@
 	namespace app;
 		/** @class UrlMap
 			@brief URL Mapper
-			@details Содержит связку URL / Controller / Action
+			@details Содержит связку URL / Controller / Method
 		*/
 		final class UrlMap
 		{

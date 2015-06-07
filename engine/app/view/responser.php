@@ -7,13 +7,9 @@
 	{
 		public function __construct(){}
 		
-		/** 
-		*/
 		protected static function send($data)
 		{
-			//ob_start();
 			echo $data;
-			//return ob_get_clean();
 		}
 
 		public static function sendHtml($data)
@@ -39,7 +35,7 @@
 			
 			$encoded = json_encode(
 				$data,
-				JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+				JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_FORCE_OBJECT
 			);
 
 			$last_error = json_last_error();

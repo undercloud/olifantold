@@ -14,7 +14,7 @@
 			*/
 			public function __construct($ru)
 			{
-				if(null === $ru or empty($ru) or !is_string($ru))
+				if(null === $ru or !is_string($ru))
 					throw new \app\exceptions\AppException('Invalid Request URI');
 
 				$this->request_uri = $ru;
@@ -49,7 +49,7 @@
 			/** Проверка POST запроса на переполнение
 				@return true или false
 			*/
-			public static function isFileOverflow()
+			public static function isPostOverflow()
 			{
 				return ($_SERVER['REQUEST_METHOD'] == 'POST' && 
 					empty($_POST) &&
@@ -77,28 +77,25 @@
 					$request = substr($request,0,$pos);
 
 				$splitted = explode('/',$request);
-				return array_filter($splitted); 
+				return array_filter($splitted,function($v){
+					return ($v != '');
+				}); 
 			}
 
-			/** Обработка суперглобальных переменных GET POST REQUEST COOKIE FILES
+			/** Обработка суперглобальных переменных GET POST REQUEST COOKIE
 				@return null
 			*/
 			public function prepareGlobalVars()
 			{
-				if (get_magic_quotes_gpc()) {
-				    $process = array(&$_GET, &$_POST, &$_REQUEST, &$_COOKIE, &$_FILES);
-				    while (list($key, $val) = each($process)) {
-				        foreach ($val as $k => $v) {
-				            unset($process[$key][$k]);
-				            if (is_array($v)) {
-				                $process[$key][stripslashes($k)] = $v;
-				                $process[] = &$process[$key][stripslashes($k)];
-				            } else {
-				                $process[$key][stripslashes($k)] = stripslashes($v);
-				            }
-				        }
-				    }
-				    unset($process);
+				if(function_exists('get_magic_quotes_gpc') and get_magic_quotes_gpc()){
+					function stripslashes_gpc(&$value){
+						$value = stripslashes($value);
+					}
+
+					array_walk_recursive($_GET, 'stripslashes_gpc');
+					array_walk_recursive($_POST, 'stripslashes_gpc');
+					array_walk_recursive($_COOKIE, 'stripslashes_gpc');
+					array_walk_recursive($_REQUEST, 'stripslashes_gpc');
 				}
 			}
 

@@ -29,7 +29,8 @@
 						$match = new \stdClass;
 						$match->controller = (isset($v[0]) ? $v[0] : null);
 						$match->action     = (isset($v[1]) ? $v[1] : null);
-						$match->mapkey     = "/$k/"; 
+						
+						$this->request->excludeMapKey("/$k/");
 
 						if(isset($v[2]))
 							$match->options = $v[2];

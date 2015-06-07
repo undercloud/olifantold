@@ -63,7 +63,7 @@
 			/** Создание экземпляра класса контроллера и вызов метода
 				@return Результат вызова метода контроллера
 			*/
-			public function run()
+			public function exec()
 			{
 				if(DEV_MODE == DEBUG){
 					if(null === $this->controller)

@@ -23,6 +23,6 @@
 
 		/** Создание экземпляра класса контроллера и вызов метода
 		*/
-		public function run();
+		public function exec();
 	}
 ?>

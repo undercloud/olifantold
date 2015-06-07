@@ -11,9 +11,6 @@
 		throw new Exception("PHP version requre " . PHP_VERSION_REQUIRE . " or higher");
 	*/
 	
-	
 	require_once __DIR__ . '/../engine/bootstrap.php';
 	\app\Application::getInstance()->run();
-
-	var_dump($_SERVER,$_REQUEST);
 ?>

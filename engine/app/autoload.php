@@ -14,16 +14,11 @@
 			{
 				$name_low = mb_strtolower(NAMESPACE_SEPARATOR != DIRECTORY_SEPARATOR  ? str_replace(NAMESPACE_SEPARATOR, DIRECTORY_SEPARATOR, $name) : $name);
 
-				$paths = array(
-					"/",
-					"/controller/",
-					"/model/",
-					"/extension/"
-				);				
+				$paths = array("/","/controller/","/model/");				
 
 				foreach($paths as $path){
 					$fullpath = ENGINE_PATH . $path . $name_low . '.php';
-					if(is_file($fullpath) == true){
+					if(file_exists($fullpath)){
 						require_once $fullpath;
 						return;
 					}

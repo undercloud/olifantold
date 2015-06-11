@@ -10,15 +10,7 @@
 		{
 			/// @param $instance объект AppRegistry
 			protected static $instance = null;
-			private $storage           = null;
-			private $storage_path      = null;
-			private $modify            = false;
-
-			private function __construct()
-			{
-				$this->storage_path = ENGINE_PATH . '/app/com/storage.reg';
-				$this->storage = unserialize(file_get_contents($this->storage_path));
-			}
+			private $storage           = array();
 
 			/** Экземпляр контейнера
 				@return объект AppRegistry
@@ -67,7 +59,6 @@
 			public function set($key,$value)
 			{
 				$this->storage[$key] = $value;
-				$this->modify = true;
 			}
 
 			/** Удаление значения
@@ -77,18 +68,6 @@
 			public function remove($key)
 			{	
 				unset($this->storage[$key]);
-				$this->modify = true;
-			}
-
-			public function __destruct()
-			{
-				if(false === $this->modify)
-					return;
-
-				if(is_writable($this->storage_path))
-					file_put_contents($this->storage_path, serialize($this->storage));
-				else
-					throw new \app\exceptions\AppException("Can't save registry");
 			}
 		}
 ?>

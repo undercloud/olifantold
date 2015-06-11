@@ -19,7 +19,7 @@
 		/** Установка аргументов
 			@param $params аргументы
 		*/
-		public function setParams(array $params);
+		public function setParams($request,$response);
 
 		/** Создание экземпляра класса контроллера и вызов метода
 		*/

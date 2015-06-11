@@ -12,12 +12,15 @@
 				@param $ru REQUEST_URI
 				@return объект Request
 			*/
-			public function __construct($ru)
+			public function __construct($request)
 			{
-				if(null === $ru or !is_string($ru))
-					throw new \app\exceptions\AppException('Invalid Request URI');
+				$request = trim($request,' /');
+				$pos = strpos($request,'?');
+				if($pos !== false)
+					$request = substr($request,0,$pos);
 
-				$this->request_uri = $ru;
+
+				$this->request_uri = $request;
 			}
 
 			/** Получение строки URI
@@ -26,24 +29,6 @@
 			public function getURI()
 			{
 				return $this->request_uri;
-			}
-
-			/** Проверка что запрос сделан с помощью AJAX
-				@return true если ajax запрос иначе false
-			*/
-			public static function isAjax()
-			{
-				return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) 
-						and 
-						strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
-			}
-
-			/** Перевод JSON запроса в массив
-				@return array
-			*/
-			public static function fromJson()
-			{
-				return json_decode(file_get_contents('php://input'),true);
 			}
 
 			/** Проверка POST запроса на переполнение
@@ -63,7 +48,7 @@
 			*/
 			public function excludeMapKey($mapkey)
 			{
-				$this->request_uri = str_replace(stripslashes(trim($mapkey,' /')),null, $this->request_uri);
+				$this->request_uri = str_replace($mapkey,'', $this->request_uri);
 			}
 
 			/** Разбор строки URI
@@ -71,12 +56,7 @@
 			*/
 			public function parse()
 			{
-				$request = trim($this->request_uri,' /');
-				$pos = strpos($request,'?');
-				if($pos !== false)
-					$request = substr($request,0,$pos);
-
-				$splitted = explode('/',$request);
+				$splitted = explode('/',$this->request_uri);
 				return array_filter($splitted,function($v){
 					return ($v != '');
 				}); 
@@ -127,6 +107,52 @@
 				}
 
 				$_FILES = $temp;
+			}
+
+			public function build()
+			{
+				$req = new \stdClass();
+
+				$req->ajax        = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) and strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+				$req->params      = $this->parse();
+				$req->originalUrl = $_SERVER['REQUEST_URI']; 
+
+				$map = array(
+					'GET'  => $_GET,
+					'POST' => $_POST,
+					'CLI'  => $_REQUEST
+				);
+
+				$req->query    = $map[$_SERVER['REQUEST_METHOD']];
+				$req->cookies  = $_COOKIE;
+				$req->files    = $_FILES;
+				$req->method   = $_SERVER['REQUEST_METHOD'];
+				$req->protocol = $_SERVER['SERVER_PROTOCOL'];
+				$req->port     = $_SERVER['SERVER_PORT'];
+				$req->host     = $_SERVER['HTTP_HOST'];
+				$req->secure   = (isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] == 'on');
+
+				if(!function_exists('getallheaders')){
+					$req->header = array();
+					$use_header  = array('CONTENT_TYPE','CONTENT_LENGTH');
+					foreach($_SERVER as $name => $value){
+						if(strtolower(substr($name, 0, 5)) == 'http_'){
+							$req->header[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+						}
+
+						if(in_array($name,$use_header)){
+							$req->header[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', $name))))] = $value;
+						}
+					}
+				}else{
+					$req->header = getallheaders();
+				}
+
+				if(isset($_SERVER['CONTENT_TYPE']) and 0 === strpos($_SERVER['CONTENT_TYPE'],'application/json')){
+					$req->json = json_decode(file_get_contents('php://input'),true);
+				}
+
+				return $req;
 			}
 		}
 ?>

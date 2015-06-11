@@ -7,25 +7,22 @@
 
 	class Controller_Index extends Controller_Base
 	{
-		public function __construct(){}
-
-		public function index($request)
+		public function index($req,$res = false)
 		{	
-			$db = \app\utils\Debugger::getInstance();
-
-			$doc = \app\view\Document::getInstance();
-			$doc->load('main');
-			$doc->addStyle('/css/style.css');
-
-			$block = new \app\view\Node();
-			$block->load('button');
-
-			$doc->assign('#article',$block);
-
-			\app\view\Responser::sendHtml($doc->render());
-
-			$db->saveState('end');
-			$db->dump();
+			echo '<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>';
+			echo '<pre>';
+			//var_dump($_SERVER);
+			//$req->ajax
+			//$req->params
+			//$req->query
+			//$req->cookie
+			//$req->files
+			//$req->method
+			//$req->protocol
+			//$req->port
+			//$req->host
+			//$req->https
+			//$req->header
 		}	
 
 		public function upload($r)
@@ -305,7 +302,7 @@
 
 		public function json($r)
 		{
-			var_dump($r,Request::fromJson());
+			var_dump($_SERVER,$r,$_POST,$_GET);
 		}
 
 		public function tester($r)

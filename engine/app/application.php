@@ -40,6 +40,8 @@
 				$request->prepareGlobalVars();
 				$request->reorderFiles();
 
+				$response = new Response();
+
 				$router = new Router($request); 
 				$callable = $router->route();
 
@@ -53,11 +55,15 @@
 					/* */
 				}
 
-				FrontController::getInstance()
+				$echo = FrontController::getInstance()
 				->setController($callable->controller)
 				->setAction($callable->action)
-				->setParams($request->parse())
+				->setParams($request->build(),$response->prepare())
 				->exec();
+
+				if(is_object($echo)){
+					$response->send($echo);
+				}
 			}
 
 			/** Запрет клонирования

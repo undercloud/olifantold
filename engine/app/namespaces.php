@@ -9,7 +9,4 @@
 
 	/** @brief Пространство имен утилит*/
 	namespace app\utils;
-
-	/** @brief Пространство имен отбражения*/
-	namespace app\view;
 ?>

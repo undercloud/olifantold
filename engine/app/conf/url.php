@@ -2,6 +2,8 @@
 	\app\UrlMap::bind(
 		array(
 			"index"  => array("Controller_Index","index", array()),
+			"nested/sub" => array("Controller_UnitTest","sub"),
+			"nested" => array("Controller_UnitTest","nested"),
 			"tester" => array("Controller_Index","tester"),
 			"sql"    => array("Controller_Index","sql"),
 			"audio"  => array("Controller_Index","ok"),

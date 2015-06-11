@@ -11,10 +11,10 @@
 		$_SERVER['REQUEST_URI']    = $_SERVER['argv'][1];
 
 		$pos = strpos($_SERVER['REQUEST_URI'],'?');
-		$_SERVER['QUERY_STRING'] = substr($_SERVER['REQUEST_URI'],$pos + 1);
-
-		if(false !== $pos)
+		if(false !== $pos){
+			$_SERVER['QUERY_STRING'] = substr($_SERVER['REQUEST_URI'],$pos + 1);
 			parse_str($_SERVER['QUERY_STRING'],$_REQUEST);
+		}
 
 		$_SERVER['DOCUMENT_ROOT'] = __DIR__ . "/../public";
 	}

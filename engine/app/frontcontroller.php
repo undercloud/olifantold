@@ -14,7 +14,8 @@
 			///@param $action Вызываемый метод
 			protected $action     = null;
 			///@param $params Аргументы метода
-			protected $params     = array();
+			protected $request    = null;
+			protected $response   = null;
 
 			private function __construct(){}
 
@@ -54,9 +55,11 @@
 				@param $params аргументы
 				@return объект FrontController
 			*/
-			public function setParams(array $params)
+			public function setParams($request,$response)
 			{
-				$this->params = $params;
+				$this->request  = $request;
+				$this->response = $response;
+
 				return $this;
 			}
 
@@ -82,7 +85,7 @@
 						throw new \app\exceptions\AppException("Method {$this->action} not found in {$this->controller}");
 				}
 
-				return call_user_func_array(array(new $this->controller(), $this->action), array($this->params));
+				return call_user_func_array(array(new $this->controller(), $this->action), array($this->request,$this->response));
 			}
 		}
 ?>

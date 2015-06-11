@@ -7,10 +7,10 @@
 
 	class Controller_Index extends Controller_Base
 	{
-		public function index($req,$res = false)
+		public function index($req,$res)
 		{	
-			echo '<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>';
-			echo '<pre>';
+			//echo '<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>';
+			//echo '<pre>';
 			//var_dump($_SERVER);
 			//$req->ajax
 			//$req->params
@@ -23,6 +23,11 @@
 			//$req->host
 			//$req->https
 			//$req->header
+
+			$res->status = 250;
+			$res->statusText = 'Dinahui';
+
+			return $res;
 		}	
 
 		public function upload($r)

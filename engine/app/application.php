@@ -58,7 +58,10 @@
 				$echo = FrontController::getInstance()
 				->setController($callable->controller)
 				->setAction($callable->action)
-				->setParams($request->build(),$response->prepare())
+				->setParams(
+					$request->build(),
+					$response->prepare()
+				)
 				->exec();
 
 				if(is_object($echo)){
@@ -71,7 +74,7 @@
 			*/
 			public function __clone() 
 			{
-				throw new \app\exceptions\AppException("Cannot clone instance of Singleton pattern");
+				throw new \app\exceptions\AppException('Cannot clone instance of Singleton pattern');
 			}
 
 			/** Запрет десериализации
@@ -81,7 +84,5 @@
 			{
 				throw new \app\exceptions\AppException('Cannot deserialize instance of Singleton pattern');
 			}
-
-			public function __destruct(){}
 		}
 ?>

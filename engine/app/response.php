@@ -14,8 +14,17 @@
 				$res->status = 200;
 				$res->statusText = 'OK';
 
-				$res->header  = array();
-				$res->cookies = array();
+				$res->header = array();
+				
+				$res->cookies = new \stdClass();
+				$res->cookies->setup = array();
+				$res->cookies->set = function()use($res){
+
+				};
+
+				$res->cookies->remove = function($name)use($res){
+
+				};
 
 				$res->body = null;
 
@@ -58,7 +67,7 @@
 				if($last_error == JSON_ERROR_NONE)
 					return $this->out($encoded);
 				else
-					throw new \app\exceptions\AppException("Malformed JSON {$last_error}");
+					throw new \app\exceptions\AppException('Malformed JSON '.$last_error);
 			}
 		}
 ?>

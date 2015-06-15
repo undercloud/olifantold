@@ -9,6 +9,7 @@
 	{
 		public function index($req,$res)
 		{	
+
 			//echo '<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>';
 			//echo '<pre>';
 			//var_dump($_SERVER);
@@ -26,6 +27,8 @@
 
 			$res->status = 250;
 			$res->statusText = 'Dinahui';
+
+			$res->body = $req->client->getBrowser();
 
 			return $res;
 		}	

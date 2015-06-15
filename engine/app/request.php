@@ -123,8 +123,22 @@
 					'CLI'  => $_REQUEST
 				);
 
-				$req->query    = $map[$_SERVER['REQUEST_METHOD']];
-				$req->cookies  = $_COOKIE;
+				$req->query = $map[$_SERVER['REQUEST_METHOD']];
+
+				$req->cookies  = new \stdClass();
+				
+				$req->cookies->get = function($key = false){
+					if(false === $key){
+						return $_COOKIE;
+					}else{
+						return (isset($_COOKIE[$key]) ? $_COOKIE[$key]: null);
+					}
+				};
+
+				$req->cookies->has = function($key){
+					return isset($_COOKIE[$key]);
+				};
+
 				$req->files    = $_FILES;
 				$req->method   = $_SERVER['REQUEST_METHOD'];
 				$req->protocol = $_SERVER['SERVER_PROTOCOL'];
@@ -132,7 +146,7 @@
 				$req->host     = $_SERVER['HTTP_HOST'];
 				$req->secure   = (isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] == 'on');
 
-				if(!function_exists('getallheaders')){
+				if(false == function_exists('getallheaders')){
 					$req->header = array();
 					$use_header  = array('CONTENT_TYPE','CONTENT_LENGTH');
 					foreach($_SERVER as $name => $value){
@@ -151,6 +165,12 @@
 				if(isset($_SERVER['CONTENT_TYPE']) and 0 === strpos($_SERVER['CONTENT_TYPE'],'application/json')){
 					$req->json = json_decode(file_get_contents('php://input'),true);
 				}
+
+				if(isset($_SERVER['HTTP_REFERER'])){
+					$req->referer = $_SERVER['HTTP_REFERER'];
+				}
+
+				$req->client = new \core\utils\Model_UserStatistics();
 
 				return $req;
 			}

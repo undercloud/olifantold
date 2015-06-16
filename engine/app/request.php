@@ -125,19 +125,7 @@
 
 				$req->query = $map[$_SERVER['REQUEST_METHOD']];
 
-				$req->cookies  = new \stdClass();
-				
-				$req->cookies->get = function($key = false){
-					if(false === $key){
-						return $_COOKIE;
-					}else{
-						return (isset($_COOKIE[$key]) ? $_COOKIE[$key]: null);
-					}
-				};
-
-				$req->cookies->has = function($key){
-					return isset($_COOKIE[$key]);
-				};
+				$req->cookies  = \core\utils\Model_CookieHelper::getReader();
 
 				$req->files    = $_FILES;
 				$req->method   = $_SERVER['REQUEST_METHOD'];

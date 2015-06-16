@@ -31,12 +31,14 @@
 	ini_set('open_basedir', DOCUMENT_ROOT . '/../');
 
 	//session
+	ini_set('session.name', 'UNIQSESSID');
+	ini_set('session.cookie_lifetime',3600);
+	ini_set('session.cookie_httponly',1);
 	ini_set('session.gc_divisor', 100);
 	ini_set('session.gc_maxlifetime', 40);
 	ini_set('session.gc_probability', 100);
 
 	//new \core\utils\Model_SessionHandler();
-	//session_set_cookie_params(1623600);
 	//session_start();
 	//$_SESSION['sasai'] = 'lalka';
 ?>

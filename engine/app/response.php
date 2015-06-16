@@ -15,17 +15,7 @@
 				$res->statusText = 'OK';
 
 				$res->header = array();
-				
-				$res->cookies = new \stdClass();
-				$res->cookies->setup = array();
-				$res->cookies->set = function()use($res){
-
-				};
-
-				$res->cookies->remove = function($name)use($res){
-
-				};
-
+				$res->cookies = \core\utils\Model_CookieHelper::getWriter();
 				$res->body = null;
 
 				return $res;
@@ -39,16 +29,18 @@
 					header($key . ': ' . $value);
 				}
 
+				$res->cookies->write();
+
 				if(isset($res->body)){
 					if(is_scalar($res->body)){
-						$this->out($res->body);
+						$this->write($res->body);
 					}else if(is_array($res->body) or is_object($res->body)){
 						$this->sendJson($res->body);
 					}
 				}
 			}
 
-			public function out($data)
+			public function write($data)
 			{
 				echo $data;
 			}
@@ -65,7 +57,7 @@
 				$last_error = json_last_error();
 
 				if($last_error == JSON_ERROR_NONE)
-					return $this->out($encoded);
+					return $this->write($encoded);
 				else
 					throw new \app\exceptions\AppException('Malformed JSON '.$last_error);
 			}

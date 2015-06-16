@@ -72,16 +72,16 @@
 					if(null === $this->controller)
 						throw new \app\exceptions\AppException("Controller class is not defined");
 
-					if(!class_exists($this->controller))
+					if(false === class_exists($this->controller))
 						throw new \app\exceptions\AppException("class {$this->controller} not found");
 
-					if(is_subclass_of($this->controller,'Controller_Base') === false)
-						throw new \app\exceptions\AppException("class {$this->controller} fail instanceof Controller_Base");
+					if(false === is_subclass_of($this->controller,'Controller_Base'))
+						throw new \app\exceptions\AppException("Class {$this->controller} fail instanceof Controller_Base");
 
 					if(null === $this->action)
 						throw new \app\exceptions\AppException("Method {$this->action} is not defined");
 
-					if(!method_exists($this->controller, $this->action))
+					if(false === method_exists($this->controller, $this->action))
 						throw new \app\exceptions\AppException("Method {$this->action} not found in {$this->controller}");
 				}
 

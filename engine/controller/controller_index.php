@@ -9,24 +9,18 @@
 	{
 		public function index($req,$res)
 		{	
-
-			//echo '<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>';
-			//echo '<pre>';
-			//var_dump($_SERVER);
-			//$req->ajax
-			//$req->params
-			//$req->query
-			//$req->cookie
-			//$req->files
-			//$req->method
-			//$req->protocol
-			//$req->port
-			//$req->host
-			//$req->https
-			//$req->header
-
 			$res->status = 250;
 			$res->statusText = 'Dinahui';
+
+			$res->header['Content-Type'] = 'text/bar';
+			$res->header['X-Powered-By'] = null;
+
+			$res->cookies->set(
+				array(
+					'name'  => 'nigga',
+					'value' => 'wassup'
+				)
+			);
 
 			$res->body = $req->client->getBrowser();
 

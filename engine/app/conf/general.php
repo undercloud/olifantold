@@ -39,6 +39,9 @@
 	ini_set('session.gc_probability', 100);
 
 	//new \core\utils\Model_SessionHandler();
-	//session_start();
+	session_start();
+5 / 0;
+	throw new \Exception("Error Processing Request", 1);
+	
 	//$_SESSION['sasai'] = 'lalka';
 ?>

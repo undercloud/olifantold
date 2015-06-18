@@ -14,7 +14,7 @@
 
 	define('NAMESPACE_SEPARATOR', '\\');
 	define('DOCUMENT_ROOT'   , $_SERVER['DOCUMENT_ROOT']);
-	define('ENGINE_PATH'     , DOCUMENT_ROOT . '/../engine');
+	define('ENGINE_PATH'     , __DIR__);
 	define('APPLICATION_PATH', ENGINE_PATH   . '/app');
 	define('CONTROLLER_PATH' , ENGINE_PATH   . '/controller');
 	define('MODEL_PATH'      , ENGINE_PATH   . '/model');

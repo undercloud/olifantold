@@ -41,18 +41,18 @@
 				$callable->action     = 'notFound404';
 			}
 
-			if(isset($callable->options)){
-				/* */
-			}
+			$input  = $request->build();
+			$output = $response->prepare(); 
+
+			\app\RequestManager::before($input,$output,$callable);
 
 			$echo = FrontController::getInstance()
 			->setController($callable->controller)
 			->setAction($callable->action)
-			->setParams(
-				$request->build(),
-				$response->prepare()
-			)
+			->setParams($input,$output)
 			->exec();
+
+			\app\RequestManager::after($input,$output,$callable);
 
 			if(is_object($echo)){
 				$response->send($echo);

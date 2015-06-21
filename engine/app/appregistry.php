@@ -1,73 +1,79 @@
 <?php
 	namespace app;
 
-		/** @class AppRegistry
-			@brief Класс - контейнер приложения
-			@details Глобальное хранилище, извлечение и вставка данных 
-			доступно из любой точки
-		*/
-		class AppRegistry implements \app\interfaces\IRegistry
+	class AppRegistry implements \app\interfaces\IRegistry
+	{
+		protected static $instance = null;
+		
+		private $storage      = array();
+		private $savekeys     = array();
+		private $storage_path = null;
+		private $modify       = false;
+
+		private function __construct()
 		{
-			/// @param $instance объект AppRegistry
-			protected static $instance = null;
-			private $storage           = array();
+			$this->storage_path = ENGINE_PATH . '/app/com/storage.reg';
 
-			/** Экземпляр контейнера
-				@return объект AppRegistry
-			*/
-			public static function getInstance()
-			{	
-				if(null === self::$instance)
-					self::$instance = new self();
-				return self::$instance;
-			}
+			if(is_readable($this->storage_path))
+				$this->storage = unserialize(file_get_contents($this->storage_path));
+			else
+				$this->storage = array();
+		}
 
-			/** Проверка присутствия ключа
-				@param $key ключ
-				@return true если ключ присутствует иначе false
-			*/
-			public function contains($key)
-			{
-				return isset($this->storage[$key]);
-			}
+		public static function getInstance()
+		{	
+			if(null === self::$instance)
+				self::$instance = new self();
+			return self::$instance;
+		}
 
-			/** Получение хранимого свойства
-				@param $key ключ
-				@return начение ключа или выбрасывание исключения AppException
-			*/
-			public function get($key)
-			{
-				if(isset($this->storage[$key]))
-					return $this->storage[$key];
-				else
-					throw new \app\exceptions\AppException('Undefined key: ' . $key);
-			}
+		public function contains($key)
+		{
+			return isset($this->storage[$key]);
+		}
 
-			/** Получение всего контейнера
-				@return array контейнер
-			*/
-			public function getAll()
-			{
-				return $this->storage;
-			}
+		public function get($key)
+		{
+			if(isset($this->storage[$key]))
+				return $this->storage[$key];
+			else
+				throw new \app\exceptions\AppException('Undefined key: ' . $key);
+		}
 
-			/** Установка значения в контейнере
-				@param $key ключ
-				@param $value значение
-				@return null
-			*/
-			public function set($key,$value)
-			{
-				$this->storage[$key] = $value;
-			}
+		public function getAll()
+		{
+			return $this->storage;
+		}
 
-			/** Удаление значения
-				@param $key ключ
-				@return null
-			*/
-			public function remove($key)
-			{	
-				unset($this->storage[$key]);
+		public function set($key,$value,$save = false)
+		{
+			$this->storage[$key] = $value;
+
+			if(true === $save){
+				$this->savekeys[] = $key;
+				$this->modify     = true;
 			}
 		}
+
+		public function remove($key)
+		{	
+			unset($this->storage[$key]);
+
+			if(isset($this->savekeys[$key])){
+				unset($this->savekeys[$key]);
+				$this->modify = true;
+			}
+		}
+
+		public function __destruct()
+		{
+			if(false === $this->modify)
+				return;
+			
+			if(is_writable($this->storage_path))
+				file_put_contents($this->storage_path, serialize(array_intersect_key($this->storage,array_flip($this->savekeys))));
+			else
+				throw new \app\exceptions\AppException('Can\'t save registry');
+		}
+	}
 ?>

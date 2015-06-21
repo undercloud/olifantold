@@ -4,6 +4,7 @@
 	class Request
 	{
 		private $request_uri = null;
+		private $map_key     = null;
 
 		public function __construct($request)
 		{
@@ -30,7 +31,10 @@
 
 		public function excludeMapKey($mapkey)
 		{
+			$this->mapkey      = $mapkey;
 			$this->request_uri = str_replace($mapkey,'', $this->request_uri);
+
+			return $this;
 		}
 
 		public function parse()
@@ -53,6 +57,8 @@
 				array_walk_recursive($_COOKIE, 'stripslashes_gpc');
 				array_walk_recursive($_REQUEST, 'stripslashes_gpc');
 			}
+
+			return $this;
 		}
 
 		public function reorderFiles()
@@ -71,6 +77,8 @@
 			}
 
 			$_FILES = $reorder;
+
+			return $this;
 		}
 
 		public function build()
@@ -80,6 +88,7 @@
 			$req->ajax        = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) and strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
 			$req->params      = $this->parse();
 			$req->originalUrl = $_SERVER['REQUEST_URI']; 
+			$req->mapkey      = $this->mapkey;
 
 			$map = array(
 				'GET'  => $_GET,

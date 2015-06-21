@@ -9,20 +9,10 @@
 	{
 		public function index($req,$res)
 		{	
-			$res->status = 250;
-			$res->statusText = 'Dinahui';
+			//\app\AppRegistry::getInstance()->set('name','Alex',true);
+			//\app\AppRegistry::getInstance()->set('nick','Hui');
 
-			$res->header['Content-Type'] = 'text/bar';
-			$res->header['X-Powered-By'] = null;
-
-			$res->cookies->set(
-				array(
-					'name'  => 'nigga',
-					'value' => 'wassup'
-				)
-			);
-
-			$res->body = $req->client->getBrowser();
+			var_dump(\app\AppRegistry::getInstance()->getAll());
 
 			return $res;
 		}	

@@ -40,8 +40,6 @@
 
 	//new \core\utils\Model_SessionHandler();
 	session_start();
-5 / 0;
-	throw new \Exception("Error Processing Request", 1);
-	
+
 	//$_SESSION['sasai'] = 'lalka';
 ?>

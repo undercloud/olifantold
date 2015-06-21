@@ -48,7 +48,7 @@
 			return $this;
 		}
 
-		public function fire($e,array $args = array())
+		public function trigger($e,array $args = array())
 		{
 			if(isset($this->stack[$e]))
 				foreach($this->stack[$e] as $c)

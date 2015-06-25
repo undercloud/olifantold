@@ -17,7 +17,7 @@
 
 		public function setStack(array $stack)
 		{
-			
+			$this->stack = $stack;
 		}
 
 		public function bind($e,$call)

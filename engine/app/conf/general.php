@@ -21,8 +21,6 @@
 
 	const TIME_ZONE  = "UTC";
 	const TIME_LIMIT = 30;
-	const BACKTRACE_ERRORS = true;
-	const BACKTRACE_EXCEPTIONS = true;
 
 	date_default_timezone_set(TIME_ZONE);
 	set_time_limit(TIME_LIMIT);
@@ -42,4 +40,12 @@
 	session_start();
 
 	//$_SESSION['sasai'] = 'lalka';
+
+	ini_set('highlight.comment','#969896');		 
+	ini_set('highlight.default','#395063');	 
+	ini_set('highlight.html'   ,'#888888');		 
+	ini_set('highlight.keyword','#2d93c6');	 
+	ini_set('highlight.string' ,'#05ad97');
+
+	ini_set('expose_php','0');
 ?>

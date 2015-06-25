@@ -22,7 +22,10 @@
 			header($_SERVER['SERVER_PROTOCOL'] . ' ' . $res->status . ' ' . $res->statusText);
 
 			foreach($res->header as $key=>$value){
-				header($key . ': ' . $value);
+				if(null === $value)
+					header_remove($key);
+				else
+					header($key . ': ' . $value);
 			}
 
 			$res->cookies->write();

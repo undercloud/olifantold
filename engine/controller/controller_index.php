@@ -13,9 +13,18 @@
 			//\app\AppRegistry::getInstance()->set('nick','Hui');
 
 			var_dump(\app\AppRegistry::getInstance()->getAll());
+			// comment line
+			//throw new Exception("Error Processing Request", 1);
+
+			Controller_Index::hui();
 
 			return $res;
 		}	
+
+		public static function hui()
+		{
+			8 / 0;
+		}
 
 		public function upload($r)
 		{

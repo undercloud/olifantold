@@ -4,7 +4,7 @@
 	class Request
 	{
 		private $request_uri = null;
-		private $map_key     = null;
+		private $mapkey      = null;
 
 		public function __construct($request)
 		{

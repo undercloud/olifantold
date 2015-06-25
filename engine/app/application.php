@@ -44,7 +44,7 @@
 			$input  = $request->build();
 			$output = $response->prepare(); 
 
-			\app\RequestManager::before($input,$output,$callable);
+			\app\MiddleWare::before($input,$output,$callable);
 
 			$echo = FrontController::getInstance()
 			->setController($callable->controller)
@@ -52,7 +52,7 @@
 			->setParams($input,$output)
 			->exec();
 
-			\app\RequestManager::after($input,$output,$callable);
+			\app\MiddleWare::after($input,$output,$callable);
 
 			if(is_object($echo)){
 				$response->send($echo);

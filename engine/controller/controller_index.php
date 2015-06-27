@@ -23,6 +23,8 @@
 
 		public static function hui()
 		{
+			var_dump($_SERVER);
+			return;
 			8 / 0;
 		}
 

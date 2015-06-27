@@ -3,6 +3,17 @@
 
 		class ErrUtils
 		{
+
+			public static function getDump($obj)
+			{
+				ob_start();
+				var_dump($obj);
+				$content = ob_get_contents();
+				ob_end_clean();
+
+				return $content;
+			}
+
 			private static function getSource($file,$line)
 			{
 				$start  = $line - 5;
@@ -15,16 +26,9 @@
 
 				$code = '
 				<style>
-					.olifant-error {
-						position: relative;
-						font-family: monospace;
-						padding: 0 15px;
-					}
-					
-					.olifant-error .item {
-						padding: 15px 0;
-  						border-bottom: 1px solid #eee;
-					}
+					.olifant-error { position: relative; font-family: monospace; padding: 0 15px; }
+					.olifant-error .item { padding: 15px 0; border-bottom: 1px solid #eee; }
+					.olifant-error .item pre { color: #2E3B47; border-left: 2px solid #05ad97; padding-left: 15px; display: block; box-sizing: border-box; max-width: 100%; overflow: auto; }
 
 					.olifant-error h1 { color: #F22613; font-family: Arial; font-weight: normal; margin: 0; margin-top: 15px;}
 					.olifant-error .path { line-height: 40px; font-family: monospace; color: #2d93c6; font-weight: bold; font-size: 12px;}
@@ -63,7 +67,7 @@
 					}
 
 					if(isset($trace['args']))
-						$echo .= '<pre>' . htmlentities(print_r($trace['args'],true),ENT_QUOTES,'UTF-8') . '</pre>';
+						$echo .= '<pre>' . self::getDump($trace['args']) /*htmlentities(self::getDump($trace['args']),ENT_QUOTES,'UTF-8') . */ . '</pre>';
 				
 					$echo .= "</div>";
 				}
@@ -99,13 +103,19 @@
 			    $echo = '<div class="olifant-error">';
 				
 				$echo .= "<div class='item'>";
-				$echo .= "<h1>{$errors[$errno]}: " . htmlentities($errstr,ENT_QUOTES,'UTF-8') . " </h1>";
+				$echo .= "<h1>{$errors[$errno]}: {$errstr}</h1>";
 
 				$echo .= "<div class='path'>{$errfile}</div>";
 
 				$echo .= self::getSource($errfile,$errline);
 
+				$echo .= "</div>";
+
+				$echo .= '<h1>Stack trace</h1>';
+
 				$echo .= self::parseStack(debug_backtrace());
+
+				$echo .= "</div>";
 
 				echo $echo;
 				
@@ -131,6 +141,6 @@
 				$echo .= "</div>";
 
 				echo $echo;
-			} 
+			}
 		}
 ?>

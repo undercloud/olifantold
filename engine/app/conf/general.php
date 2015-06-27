@@ -7,10 +7,10 @@
 
 	if(DEV_MODE === DEBUG){
 		$error_reporting = E_ALL | E_STRICT;
-		$error_mode = 1;
+		$error_mode = 'On';
 	}else if(DEV_MODE === RELEASE){
 		$error_reporting = 0;
-		$error_mode = 0;
+		$error_mode = 'Off';
 	}
 
 	error_reporting($error_reporting);
@@ -18,6 +18,9 @@
 	ini_set("display_startup_errors",$error_mode);
 	ini_set('xdebug.default_enable', $error_mode);
 	ini_set("log_errors", $error_mode);
+
+	if($_SERVER['REQUEST_METHOD'] == 'CLI')
+		ini_set('html_errors','Off');
 
 	const TIME_ZONE  = "UTC";
 	const TIME_LIMIT = 30;
@@ -39,13 +42,9 @@
 	//new \core\utils\Model_SessionHandler();
 	session_start();
 
-	//$_SESSION['sasai'] = 'lalka';
-
 	ini_set('highlight.comment','#969896');		 
 	ini_set('highlight.default','#395063');	 
 	ini_set('highlight.html'   ,'#888888');		 
 	ini_set('highlight.keyword','#2d93c6');	 
 	ini_set('highlight.string' ,'#05ad97');
-
-	ini_set('expose_php','0');
 ?>
